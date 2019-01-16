@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="UTF-8">
+    </head>
+    <body>
+      <div id="container">
+        <button id="rock">Rock</button>
+        <button id="paper">Paper</button>
+        <button id="scissors">Scissors</button>
+      </div>
+
+      <script>
+        playerWin = 0;
+        computerWin = 0;
+        i = 0;
+        let playerSelection;
+        let computerSelection = computerPlay();
+
+        let btnRock = document.querySelector("#rock");
+        let btnPaper = document.querySelector("#paper");
+        let btnScissors = document.querySelector("#scissors");
+
+        btnRock.addEventListener("click", runMultipleFunctions);
+        btnPaper.addEventListener("click", runMultipleFunctions);
+        btnScissors.addEventListener("click", runMultipleFunctions);
+
+        function playerPlay(e) { 
+          return e.target.id;
+        }
+
+        function runMultipleFunctions(e) {
+          const container = document.querySelector("#container");
+          const main = document.createElement("div");
+          const roundResult = document.createElement("div");
+          const gameWinner = document.createElement("div");
+          
+          playerPlay(e);
+          playerSelection = playerPlay(e);
+          computerSelection = computerPlay();
+          ResultOfRound = playRound(playerSelection, computerSelection);
+
+          roundResult.textContent = `Round ` + ++i + `: ` + `Player selects ` + `"${playerSelection}"` + ` | ` + `Computer selects ` + `"${computerSelection}"` + ` | 
+                                    ` + "Your Score: " + playerWin + " |" + " Computer Score: " + computerWin + " | " + `${ResultOfRound}`;
+
+          main.appendChild(roundResult);
+          container.appendChild(main);  
+
+          if (i == 5 && playerWin > computerWin) {
+            gameWinner.textContent = `You won ${playerWin} out of 5 rounds`;
+            main.appendChild(gameWinner);
+            alert(`You won ${playerWin} out of 5 rounds`);
+          } else if (i == 5 && playerWin < computerWin) {
+            gameWinner.textContent = `You lost ${computerWin} out of 5 rounds`;
+            main.appendChild(gameWinner);  
+            alert(`You lost ${computerWin} out of 5 rounds`);
+          } else if (i == 5 & playerWin == computerWin) {
+            gameWinner.textContent = "You won & lost an equal number of rounds. Draw!";
+            main.appendChild(gameWinner);
+            alert("You won & lost an equal number of rounds. Draw!");
+          }
+
+          if (i >= 5) {
+            i = 0;
+            playerWin = 0;
+            computerWin = 0;
+          }
+        }
+
+        function computerPlay() {
+          function compDecision() {
+            return Math.floor(Math.random() * (3 - 1 + 1) + 1);
+          }
+          if (compDecision() == 1) {
+            return "rock";
+          } else if (compDecision() == 2) {
+            return "scissors";
+          } else {
+            return "paper";
+          }
+        }
+
+        function playRound(playerSelection, computerSelection) {
+          if (playerSelection == "rock" && computerSelection == "scissors") {
+            playerWin++;
+            return "You win! Rock beats scissors";
+          } else if (playerSelection == "scissors" && computerSelection == "paper") {
+            playerWin++;
+            return "You win! Scissors beats paper";
+          } else if (playerSelection == "paper" && computerSelection == "rock") {
+            playerWin++;
+            return "You win! Paper beats rocks";
+          } else if (playerSelection == "rock" && computerSelection == "paper") {
+            computerWin++;
+            return "You lose! Paper beats rock";
+          } else if (playerSelection == "scissors" && computerSelection == "rock") {
+            computerWin++;
+            return "You lose! Rock beats scissors";
+          } else if (playerSelection == "paper" && computerSelection == "scissors") {
+            computerWin++;
+            return "You lose! Scissors beats paper";
+          } else if (playerSelection == computerSelection) {
+            return "Draw!";
+          } else {
+            return "You didn't enter rock, paper or scissors";
+          }
+        }
+      </script>
+    </body>
+  </html>
